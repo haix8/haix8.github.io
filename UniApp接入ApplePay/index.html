@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="背景最近一个app项目中需要对接Apple Pay内购，因为也是第一次对接，所以记录下过程。 上传应用版本 在App Store Connect中上传一个应用版本。有版本即可。  添加内购项目。 跟着表单提交即可。 注意上传审核信息截屏和备注，提交完后当状态为准备提交即可。 产品ID是唯一字母数字ID。一旦该ID添加过，即使删除该产品，此ID也无法再次使用。 在版本中勾选上面添加好的内购项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UniApp接入ApplePay">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/index.html">
+<meta property="og:site_name" content="Haix">
+<meta property="og:description" content="背景最近一个app项目中需要对接Apple Pay内购，因为也是第一次对接，所以记录下过程。 上传应用版本 在App Store Connect中上传一个应用版本。有版本即可。  添加内购项目。 跟着表单提交即可。 注意上传审核信息截屏和备注，提交完后当状态为准备提交即可。 产品ID是唯一字母数字ID。一旦该ID添加过，即使删除该产品，此ID也无法再次使用。 在版本中勾选上面添加好的内购项目">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://haix8.github.io/images/applepay.png">
+<meta property="og:image" content="https://haix8.github.io/images/k3u1fbpfcp.png">
+<meta property="og:image" content="https://haix8.github.io/images/7b0083e1.png">
+<meta property="og:image" content="https://haix8.github.io/images/4fbab146a1.png">
+<meta property="og:image" content="https://haix8.github.io/images/195f626e.png">
+<meta property="og:image" content="https://haix8.github.io/images/0d945672.png">
+<meta property="og:image" content="https://haix8.github.io/images/cf6ffd90d0.png">
+<meta property="og:image" content="https://haix8.github.io/images/3389e266531.png">
+<meta property="article:published_time" content="2022-05-11T03:55:56.000Z">
+<meta property="article:modified_time" content="2023-11-19T12:42:33.776Z">
+<meta property="article:author" content="Haix">
+<meta property="article:tag" content="UniApp">
+<meta property="article:tag" content="ApplePay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haix8.github.io/images/applepay.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>UniApp接入ApplePay</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&text=UniApp接入ApplePay"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&is_video=false&description=UniApp接入ApplePay"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=UniApp接入ApplePay&body=Check out this article: https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&name=UniApp接入ApplePay&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&t=UniApp接入ApplePay"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%BA%94%E7%94%A8%E7%89%88%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">上传应用版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%86%85%E8%B4%AD%E9%A1%B9%E7%9B%AE%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">添加内购项目。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E5%8D%8F%E8%AE%AE-%E7%A8%8E%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">完善协议&#x2F;税务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">证书配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AF%B9%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">代码对接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">过程中遇到的问题</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        UniApp接入ApplePay
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Haix</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-11T03:55:56.000Z" class="dt-published" itemprop="datePublished">2022-05-11</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/ApplePay/" rel="tag">ApplePay</a>, <a class="p-category" href="/tags/UniApp/" rel="tag">UniApp</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p><img src="/images/applepay.png" alt="applepay.webp"></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近一个app项目中需要对接Apple Pay内购，因为也是第一次对接，所以记录下过程。</p>
+<h2 id="上传应用版本"><a href="#上传应用版本" class="headerlink" title="上传应用版本"></a>上传应用版本</h2><ul>
+<li>在<a target="_blank" rel="noopener" href="https://appstoreconnect.apple.com/">App Store Connect</a>中上传一个应用版本。有版本即可。</li>
+</ul>
+<h2 id="添加内购项目。"><a href="#添加内购项目。" class="headerlink" title="添加内购项目。"></a>添加内购项目。</h2><ul>
+<li>跟着表单提交即可。</li>
+<li>注意上传审核信息截屏和备注，提交完后当状态为准备提交即可。</li>
+<li>产品ID是唯一字母数字ID。一旦该ID添加过，即使删除该产品，此ID也无法再次使用。<br><img src="/images/k3u1fbpfcp.png" alt="image.png"><br><img src="/images/7b0083e1.png" alt="image.png"></li>
+<li>在版本中勾选上面添加好的内购项目<br><img src="/images/4fbab146a1.png" alt="image.png"></li>
+</ul>
+<h2 id="完善协议-税务"><a href="#完善协议-税务" class="headerlink" title="完善协议&#x2F;税务"></a>完善协议&#x2F;税务</h2><p><img src="/images/195f626e.png" alt="image.png"></p>
+<ul>
+<li>“免费app”默认的有效期，是和账号的到期时间保持一致的，而“付费应用程序”则需要进行进一步设置，点击右侧“查看并同意条款”。</li>
+<li>填写地址信息，地址必须是英文&#x2F;拼音，如果地址太长可以分2行填写。</li>
+<li>完善银行卡等信息，持卡人姓名必须是英文&#x2F;拼音。如果银行收款信息不清楚可以向银行致电查询。</li>
+<li>设置【税务协议，美国税务协议】，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64728939">详细流程点这里</a>。</li>
+<li>审核通过之后状态为有效即可进行下一步<br><img src="/images/0d945672.png" alt="image.png"></li>
+</ul>
+<h2 id="证书配置"><a href="#证书配置" class="headerlink" title="证书配置"></a>证书配置</h2><ul>
+<li>证书需要勾选，配置一个merchant。</li>
+</ul>
+<p><img src="/images/cf6ffd90d0.png" alt="image.png"></p>
+<h2 id="代码对接"><a href="#代码对接" class="headerlink" title="代码对接"></a>代码对接</h2><ul>
+<li>配置文件中勾选Apple内应用支付。这里需要注意，如果不全是虚拟商品或服务的(苹果的内购条件)，则可以同时集成别的支付，如微信支付宝，反之则不要勾选，不然苹果会认为你有隐藏的功能会绕过内购。<br>  <img src="/images/3389e266531.png" alt="image.png"></li>
+<li>调用 <code>plus.payment.getChannels</code> 来获取支付通道</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">iospay</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="variable language_">this</span></span><br><span class="line">    uni.<span class="title function_">showLoading</span>(&#123;</span><br><span class="line">        <span class="attr">title</span>: <span class="string">&#x27;检测支付环境...&#x27;</span>,</span><br><span class="line">        <span class="attr">mask</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    plus.<span class="property">payment</span>.<span class="title function_">getChannels</span>(<span class="function">(<span class="params">channels</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// console.log(&#x27;channels=&gt;&#x27;, channels)</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> channels) &#123;</span><br><span class="line">            <span class="comment">// 判断是否苹果支付</span></span><br><span class="line">            <span class="keyword">if</span> (channels[i].<span class="property">id</span> === <span class="string">&#x27;appleiap&#x27;</span>) &#123;</span><br><span class="line">                that.<span class="property">iapChannel</span> = channels[i]</span><br><span class="line">                that.<span class="title function_">requestOrder</span>()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (that.<span class="property">iapChannel</span> == <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">            uni.<span class="title function_">hideLoading</span>()</span><br><span class="line">            uni.<span class="title function_">showToast</span>(&#123;</span><br><span class="line">                <span class="attr">icon</span>: <span class="string">&#x27;none&#x27;</span>,</span><br><span class="line">                <span class="attr">title</span>: <span class="string">&#x27;暂不支持苹果 iap 支付&#x27;</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调用上一步拿到对象的<code>requestOrder</code>方法<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">requestOrder</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;获取订单信息中...&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> that = <span class="variable language_">this</span></span><br><span class="line">    <span class="comment">// ids 是平台申请拿到的内购商品的id</span></span><br><span class="line">    <span class="keyword">var</span> ids = [that.<span class="property">productId</span>];</span><br><span class="line">    that.<span class="property">iapChannel</span>.<span class="title function_">requestOrder</span>(ids, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">        <span class="comment">// 获取订单信息成功回调方法</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;获取订单信息成功=&gt;&#x27;</span>, event)</span><br><span class="line">        uni.<span class="title function_">hideLoading</span>()</span><br><span class="line">        that.<span class="title function_">topay</span>(that.<span class="property">productId</span>)</span><br><span class="line">    &#125;, <span class="keyword">function</span>(<span class="params">erroemsg</span>) &#123;</span><br><span class="line">        <span class="comment">// 获取订单信息失败回调方法  </span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;requestOrder failed: &#x27;</span> + <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(erroemsg));</span><br><span class="line">        uni.<span class="title function_">hideLoading</span>()</span><br><span class="line">        uni.<span class="title function_">showToast</span>(&#123;</span><br><span class="line">            <span class="attr">title</span>: <span class="string">&quot;获取支付通道失败：&quot;</span> + errormsg.<span class="property">message</span>,</span><br><span class="line">            <span class="attr">icon</span>: <span class="string">&#x27;none&#x27;</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>最后调用<code>uni.requestPayment</code>拿到后端接口需要的交易id校验体</li>
+<li>注意：发起支付必须要在requestOrder之后<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">topay</span>(<span class="params">id</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;发起支付中...&#x27;</span>)</span><br><span class="line">    <span class="keyword">const</span> that = <span class="variable language_">this</span></span><br><span class="line">    uni.<span class="title function_">showLoading</span>(&#123;</span><br><span class="line">        <span class="attr">title</span>: <span class="string">&#x27;充值中请勿离开&#x27;</span>,</span><br><span class="line">        <span class="attr">mask</span>: <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line">    uni.<span class="title function_">requestPayment</span>(&#123;</span><br><span class="line">        <span class="attr">provider</span>: <span class="string">&#x27;appleiap&#x27;</span>,</span><br><span class="line">        <span class="attr">orderInfo</span>: &#123;</span><br><span class="line">            <span class="attr">productid</span>: id <span class="comment">// 内购产品的product_id</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">success</span>: (<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;支付成功&#x27;</span>)</span><br><span class="line">            uni.<span class="title function_">hideLoading</span>()</span><br><span class="line">            <span class="keyword">const</span> orderId = that.<span class="property">orderId</span> <span class="comment">//这个订单id 是由后端返回的</span></span><br><span class="line">            <span class="keyword">const</span> transactionId = res.<span class="property">transactionIdentifier</span> <span class="comment">//交易id</span></span><br><span class="line">            <span class="keyword">const</span> payload = res.<span class="property">transactionReceipt</span> <span class="comment">//校验体</span></span><br><span class="line">            <span class="comment">//给自己的服务端通知，服务端做校验和支付成功的业务</span></span><br><span class="line">            <span class="keyword">let</span> url = <span class="string">&#x27;/api/user/iosNotify&#x27;</span>;</span><br><span class="line">            <span class="keyword">let</span> parames = &#123;</span><br><span class="line">                <span class="attr">transactionId</span>: transactionId,</span><br><span class="line">                <span class="attr">payload</span>: payload,</span><br><span class="line">                <span class="attr">orderId</span>: orderId</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;iosNotifyParames=&gt;&#x27;</span>, parames)</span><br><span class="line">            <span class="variable language_">this</span>.$myRequest(&#123;</span><br><span class="line">                <span class="attr">url</span>: url,</span><br><span class="line">                <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">                <span class="attr">data</span>: parames</span><br><span class="line">            &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">                uni.<span class="title function_">showToast</span>(&#123;</span><br><span class="line">                    <span class="attr">icon</span>: <span class="string">&#x27;success&#x27;</span>,</span><br><span class="line">                    <span class="attr">title</span>: <span class="string">&#x27;支付成功&#x27;</span></span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="attr">fail</span>: <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;支付失败=&gt;&#x27;</span>, e)</span><br><span class="line">            uni.<span class="title function_">hideLoading</span>()</span><br><span class="line">            uni.<span class="title function_">showModal</span>(&#123;</span><br><span class="line">                <span class="attr">content</span>: <span class="string">&quot;支付失败&quot;</span>,</span><br><span class="line">                <span class="attr">showCancel</span>: <span class="literal">false</span></span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="过程中遇到的问题"><a href="#过程中遇到的问题" class="headerlink" title="过程中遇到的问题"></a>过程中遇到的问题</h2><ul>
+<li><p>测试支付需要配置沙箱测试账号</p>
+<p>  新的内购产品上线之前，测试人员一般需要对内购产品进行测试，但是内购涉及到钱，所以苹果为内购测试提供了 沙箱测试账号 的功能，Apple Pay 推出之后 沙箱测试账号，也可以用于 Apple Pay 支付的测试，沙箱测试账号 简单理解就是：只能用于内购和 Apple Pay 测试功能的 Apple ID，它并不是真实的 Apple ID。</p>
+<p>  填写沙箱测试账号信息需要注意以下几点：</p>
+<ul>
+<li>电子邮件不能是别人已经注册过 AppleID 的邮箱</li>
+<li>电子邮箱可以不是真实的邮箱，但是必须符合邮箱格式</li>
+<li>App Store 地区的选择，测试的时候弹出的提示框以及结算的价格会按照沙箱账号选择的地区来，建议测试的时候新建几个不同地区的账号进行测试！！！</li>
+</ul>
+<p>  沙箱账号测试的使用：</p>
+<ul>
+<li>首先沙箱测试账号必须在真机环境下进行测试，并且是 adhoc 证书或者 develop 证书签名的安装包，沙盒账号不支持直接从 App Store 下载的安装包</li>
+<li>去真机的 App Store 退出真实的 Apple ID 账号，退出之后并不需要在App Store 里面登录沙箱测试账号</li>
+<li>然后去 App 里面测试购买商品，会弹出登录框，选择 <code>使用现有的 Apple ID</code>，然后登录沙箱测试账号，登录成功之后会弹出购买提示框，点击 <code>购买</code>，然后会弹出提示框完成购买。</li>
+</ul>
+</li>
+<li><p><code>requestOrder</code>函数成功和失败的回调都没响应</p>
+<ul>
+<li>检查内购产品和税务是否完善</li>
+</ul>
+</li>
+<li><p><code>requestPayment</code>页面提示支付成功，但是<code>success</code>回调无响应</p>
+<ul>
+<li>沙箱的回调特别特别慢且随缘…</li>
+<li>支付成功后，杀死app重新进入，再次唤起支付，上次的回调有‘几率’拿到。</li>
+</ul>
+</li>
+</ul>
+<p>个人总结，如有不妥之处，烦请指出。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/archives/">Blog</a></li>
+        
+          <li><a href="/gtags/">Tags</a></li>
+        
+          <li><a href="/TODO/">TODO</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E5%BA%94%E7%94%A8%E7%89%88%E6%9C%AC"><span class="toc-number">2.</span> <span class="toc-text">上传应用版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%86%85%E8%B4%AD%E9%A1%B9%E7%9B%AE%E3%80%82"><span class="toc-number">3.</span> <span class="toc-text">添加内购项目。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E5%96%84%E5%8D%8F%E8%AE%AE-%E7%A8%8E%E5%8A%A1"><span class="toc-number">4.</span> <span class="toc-text">完善协议&#x2F;税务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">证书配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AF%B9%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">代码对接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">过程中遇到的问题</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&text=UniApp接入ApplePay"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&is_video=false&description=UniApp接入ApplePay"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=UniApp接入ApplePay&body=Check out this article: https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&title=UniApp接入ApplePay"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&name=UniApp接入ApplePay&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/UniApp%E6%8E%A5%E5%85%A5ApplePay/&t=UniApp接入ApplePay"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2023
+    Haix
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
