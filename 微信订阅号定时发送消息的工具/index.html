@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="为什么做之前在掘金上看到很多人分享，给女朋友或“任何人”每天定时推送消息，像是纪念日提醒、每日一句关心这类的。感觉有点意思于是想着也给我家那位整个。 怎么做实现方式五花八门，我为了方便利用微信服务号给推送模版信息,定时任务用了laravel的任务调度(其实就只是用它一个定时任务，不用框架也完全可以)。 实现原理  调用天行数据的api，获取自己想要的数据,封装起来  调用easywechat的接口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信订阅号定时发送消息的工具">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/index.html">
+<meta property="og:site_name" content="Haix">
+<meta property="og:description" content="为什么做之前在掘金上看到很多人分享，给女朋友或“任何人”每天定时推送消息，像是纪念日提醒、每日一句关心这类的。感觉有点意思于是想着也给我家那位整个。 怎么做实现方式五花八门，我为了方便利用微信服务号给推送模版信息,定时任务用了laravel的任务调度(其实就只是用它一个定时任务，不用框架也完全可以)。 实现原理  调用天行数据的api，获取自己想要的数据,封装起来  调用easywechat的接口">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-13T03:58:36.000Z">
+<meta property="article:modified_time" content="2023-12-13T06:16:45.494Z">
+<meta property="article:author" content="Haix">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="laravel">
+<meta property="article:tag" content="wechat">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>微信订阅号定时发送消息的工具</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E9%80%9A%E8%BF%87%E5%B0%8F%E7%A8%8B%E5%BA%8FUrlScheme%E8%B7%B3%E8%BD%AC%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&text=微信订阅号定时发送消息的工具"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&is_video=false&description=微信订阅号定时发送消息的工具"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=微信订阅号定时发送消息的工具&body=Check out this article: https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&name=微信订阅号定时发送消息的工具&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&t=微信订阅号定时发送消息的工具"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%81%9A"><span class="toc-number">1.</span> <span class="toc-text">为什么做</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%81%9A"><span class="toc-number">2.</span> <span class="toc-text">怎么做</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.</span> <span class="toc-text">实现步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">5.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        微信订阅号定时发送消息的工具
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Haix</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-12-13T03:58:36.000Z" class="dt-published" itemprop="datePublished">2023-12-13</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/laravel/" rel="tag">laravel</a>, <a class="p-category" href="/tags/php/" rel="tag">php</a>, <a class="p-category" href="/tags/wechat/" rel="tag">wechat</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="为什么做"><a href="#为什么做" class="headerlink" title="为什么做"></a>为什么做</h2><p>之前在掘金上看到很多人分享，给女朋友或“任何人”每天定时推送消息，像是纪念日提醒、每日一句关心这类的。感觉有点意思于是想着也给我家那位整个。</p>
+<h2 id="怎么做"><a href="#怎么做" class="headerlink" title="怎么做"></a>怎么做</h2><p>实现方式五花八门，我为了方便利用微信服务号给推送模版信息,定时任务用了laravel的任务调度(其实就只是用它一个定时任务，不用框架也完全可以)。</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ul>
+<li><input disabled="" type="checkbox"> 调用天行数据的api，获取自己想要的数据,封装起来</li>
+<li><input disabled="" type="checkbox"> 调用easywechat的接口，实现给微信好友发送消息</li>
+<li><input disabled="" type="checkbox"> 添加定时任务，实现定时发送</li>
+</ul>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><ol>
+<li><p>创建微信模版消息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">❤早安吖❤</span><br><span class="line">&#123;&#123;date.DATA&#125;&#125;&#123;&#123;remark.DATA&#125;&#125;</span><br><span class="line">所在城市：&#123;&#123;city.DATA&#125;&#125;</span><br><span class="line">今天天气：&#123;&#123;weather.DATA&#125;&#125;</span><br><span class="line">气温变化：&#123;&#123;minTemperature.DATA&#125;&#125;~&#123;&#123;maxTemperature.DATA&#125;&#125;</span><br><span class="line">今天建议：&#123;&#123;tips.DATA&#125;&#125;</span><br><span class="line"></span><br><span class="line">今天是我们相恋De第&#123;&#123;loveDays.DATA&#125;&#125;天</span><br><span class="line">距离大宝宝的生日还有&#123;&#123;birthDay.DATA&#125;&#125;天</span><br><span class="line">距离小宝宝的生日还有&#123;&#123;childBirthDay.DATA&#125;&#125;天</span><br><span class="line"></span><br><span class="line">&#123;&#123;rainbow.DATA&#125;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用天行数据接口，获取天气预报</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">tianqi</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="variable">$uri</span> = <span class="string">&#x27;https://apis.tianapi.com/tianqi/index&#x27;</span>;</span><br><span class="line">        <span class="variable">$client</span> = <span class="keyword">new</span> <span class="title class_">Client</span>();</span><br><span class="line">        <span class="variable">$response</span> = <span class="variable">$client</span>-&gt;<span class="title function_ invoke__">get</span>(<span class="variable">$uri</span>, [</span><br><span class="line">            <span class="string">&#x27;query&#x27;</span> =&gt; [</span><br><span class="line">                <span class="string">&#x27;key&#x27;</span> =&gt; <span class="string">&#x27;key&#x27;</span>,//你自己申请的key</span><br><span class="line">                <span class="string">&#x27;city&#x27;</span> =&gt; <span class="string">&#x27;郑州&#x27;</span>,</span><br><span class="line">                <span class="string">&#x27;type&#x27;</span> =&gt; <span class="string">&#x27;1&#x27;</span></span><br><span class="line">            ]</span><br><span class="line">        ]);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;t.json&#x27;</span>,<span class="variable">$response</span>-&gt;<span class="title function_ invoke__">getBody</span>()-&gt;<span class="title function_ invoke__">getContents</span>());<span class="keyword">die</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_ invoke__">json_decode</span>(<span class="variable">$response</span>-&gt;<span class="title function_ invoke__">getBody</span>()-&gt;<span class="title function_ invoke__">getContents</span>())-&gt;result;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (\<span class="built_in">Exception</span> <span class="variable">$exception</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    &#123;</span></span><br><span class="line"><span class="comment">        &quot;code&quot;: 200,</span></span><br><span class="line"><span class="comment">        &quot;msg&quot;: &quot;success&quot;,</span></span><br><span class="line"><span class="comment">        &quot;result&quot;: &#123;</span></span><br><span class="line"><span class="comment">            &quot;date&quot;: &quot;2023-12-13&quot;,</span></span><br><span class="line"><span class="comment">            &quot;week&quot;: &quot;星期三&quot;,</span></span><br><span class="line"><span class="comment">            &quot;province&quot;: &quot;河南&quot;,</span></span><br><span class="line"><span class="comment">            &quot;area&quot;: &quot;郑州&quot;,</span></span><br><span class="line"><span class="comment">            &quot;areaid&quot;: &quot;101180101&quot;,</span></span><br><span class="line"><span class="comment">            &quot;weather&quot;: &quot;阴&quot;,</span></span><br><span class="line"><span class="comment">            &quot;weatherimg&quot;: &quot;yin.png&quot;,</span></span><br><span class="line"><span class="comment">            &quot;weathercode&quot;: &quot;yin&quot;,</span></span><br><span class="line"><span class="comment">            &quot;real&quot;: &quot;-0.5℃&quot;,</span></span><br><span class="line"><span class="comment">            &quot;lowest&quot;: &quot;-1℃&quot;,</span></span><br><span class="line"><span class="comment">            &quot;highest&quot;: &quot;0℃&quot;,</span></span><br><span class="line"><span class="comment">            &quot;wind&quot;: &quot;东北风&quot;,</span></span><br><span class="line"><span class="comment">            &quot;windspeed&quot;: &quot;11&quot;,</span></span><br><span class="line"><span class="comment">            &quot;windsc&quot;: &quot;2级&quot;,</span></span><br><span class="line"><span class="comment">            &quot;sunrise&quot;: &quot;07:23&quot;,</span></span><br><span class="line"><span class="comment">            &quot;sunset&quot;: &quot;17:15&quot;,</span></span><br><span class="line"><span class="comment">            &quot;moonrise&quot;: &quot;&quot;,</span></span><br><span class="line"><span class="comment">            &quot;moondown&quot;: &quot;&quot;,</span></span><br><span class="line"><span class="comment">            &quot;pcpn&quot;: &quot;0&quot;,</span></span><br><span class="line"><span class="comment">            &quot;uv_index&quot;: &quot;0&quot;,</span></span><br><span class="line"><span class="comment">            &quot;aqi&quot;: &quot;104&quot;,</span></span><br><span class="line"><span class="comment">            &quot;quality&quot;: &quot;轻度&quot;,</span></span><br><span class="line"><span class="comment">            &quot;vis&quot;: &quot;1&quot;,</span></span><br><span class="line"><span class="comment">            &quot;humidity&quot;: &quot;96&quot;,</span></span><br><span class="line"><span class="comment">            &quot;alarmlist&quot;: [</span></span><br><span class="line"><span class="comment">                &#123;</span></span><br><span class="line"><span class="comment">                &quot;province&quot;: &quot;河南省&quot;,</span></span><br><span class="line"><span class="comment">                &quot;city&quot;: &quot;&quot;,</span></span><br><span class="line"><span class="comment">                &quot;level&quot;: &quot;黄色&quot;,</span></span><br><span class="line"><span class="comment">                &quot;type&quot;: &quot;道路结冰&quot;,</span></span><br><span class="line"><span class="comment">                &quot;content&quot;: &quot;河南省气象台2023年12月12日16时00分继续发布道路结冰黄色预警：预计12月12日16时到13日16时，西部、北中部有雨夹雪或中雪，局部大雪或暴雪，部分县市伴有冻雨；其他县市有小到中雨。全省大部县市路表温度低于0℃，将出现对交通有较大影响的道路结冰，其中黄河以北及三门峡、洛阳、郑州、开封、许昌北部、平顶山北部影响较严重。请注意防范。\n防御指南：\n1.交通运输、公安等部门应按照职责做好道路结冰应对准备工作；\n2.驾驶人员应当注意路况，安全行驶；\n3.行人减少外出，必要外出时尽量少骑自行车，注意防滑。（预警信息来源：国家预警信息发布中心）&quot;,</span></span><br><span class="line"><span class="comment">                &quot;time&quot;: &quot;2023-12-12 16:00:00&quot;</span></span><br><span class="line"><span class="comment">                &#125;</span></span><br><span class="line"><span class="comment">            ],</span></span><br><span class="line"><span class="comment">            &quot;tips&quot;: &quot;天气寒冷，冬季着装：棉衣、羽绒服、冬大衣、皮夹克加羊毛衫、厚呢外套、呢帽、手套等；年老体弱者尽量少外出。空气质量较差，敏感人群建议减少体力消耗类户外活动。&quot;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    &#125;       </span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>组合模版消息</p>
+<p>计算恋爱天数</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getLoveDays</span>(<span class="params"></span>): <span class="title">int</span></span>&#123;</span><br><span class="line">    <span class="variable">$start_date</span> = <span class="built_in">self</span>::<span class="variable">$loveDays</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Carbon</span>::<span class="title function_ invoke__">now</span>()-&gt;<span class="title function_ invoke__">diffInDays</span>(<span class="variable">$start_date</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>计算生日剩余天数</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">getBirthDays</span>(<span class="params"><span class="variable">$start_date</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$birthday</span> = <span class="title class_">Carbon</span>::<span class="title function_ invoke__">parse</span>(<span class="variable">$start_date</span>);</span><br><span class="line">    <span class="variable">$birthday</span>-&gt;<span class="title function_ invoke__">year</span>(<span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y&#x27;</span>));</span><br><span class="line">    <span class="variable">$d</span> = <span class="title class_">Carbon</span>::<span class="title function_ invoke__">now</span>()-&gt;<span class="title function_ invoke__">diffInDays</span>(<span class="variable">$birthday</span>, <span class="literal">false</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$d</span> &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//计算明年</span></span><br><span class="line">        <span class="variable">$birthday</span>-&gt;<span class="title function_ invoke__">year</span>(<span class="title function_ invoke__">date</span>(<span class="string">&quot;Y&quot;</span>, <span class="title function_ invoke__">strtotime</span>(<span class="string">&quot;+1 year&quot;</span>)));</span><br><span class="line">        <span class="variable">$d</span> = <span class="title class_">Carbon</span>::<span class="title function_ invoke__">now</span>()-&gt;<span class="title function_ invoke__">diffInDays</span>(<span class="variable">$birthday</span>, <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$d</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 模版消息</p>
+ <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$msg</span> = [</span><br><span class="line">    <span class="string">&#x27;touser&#x27;</span> =&gt; <span class="variable">$touser</span>,</span><br><span class="line">    <span class="string">&#x27;template_id&#x27;</span> =&gt; <span class="string">&#x27;2-grcuQ9CVdf0mMrPjf_6ipXBiCN1t0XyVmhn6GC_YM&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;data&#x27;</span> =&gt; [</span><br><span class="line">        <span class="string">&#x27;date&#x27;</span> =&gt; [</span><br><span class="line">            <span class="title function_ invoke__">date</span>(<span class="string">&#x27;Y-m-d&#x27;</span>) . <span class="variable">$weather</span>-&gt;week,</span><br><span class="line">            <span class="string">&#x27;#00BFFF&#x27;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="comment">// &quot;❤&quot;</span></span><br><span class="line">        <span class="string">&#x27;remark&#x27;</span> =&gt; <span class="variable">$remark</span>,</span><br><span class="line">        <span class="string">&#x27;city&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$weather</span>-&gt;area,</span><br><span class="line">            <span class="string">&#x27;&#x27;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;weather&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$weather</span>-&gt;weather,</span><br><span class="line">            <span class="string">&quot;#1f95c5&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;minTemperature&#x27;</span> =&gt; [</span><br><span class="line">            <span class="string">&#x27;value&#x27;</span> =&gt; <span class="variable">$weather</span>-&gt;lowest,</span><br><span class="line">            <span class="string">&#x27;color&#x27;</span> =&gt; <span class="string">&#x27;#0ace3c&#x27;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;maxTemperature&#x27;</span> =&gt; [</span><br><span class="line">            <span class="string">&#x27;value&#x27;</span> =&gt; <span class="variable">$weather</span>-&gt;highest,</span><br><span class="line">            <span class="string">&#x27;color&#x27;</span> =&gt; <span class="string">&#x27;#dc1010&#x27;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;tips&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$weather</span>-&gt;tips,</span><br><span class="line">            <span class="string">&quot;&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;loveDays&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$loveDays</span>,</span><br><span class="line">            <span class="string">&quot;#FFA500&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;birthDay&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$birthDays</span>,</span><br><span class="line">            <span class="string">&quot;#FFA500&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;childBirthDay&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$childBirthDay</span>,</span><br><span class="line">            <span class="string">&quot;#FFA500&quot;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="string">&#x27;rainbow&#x27;</span> =&gt; [</span><br><span class="line">            <span class="variable">$rainbow</span>,</span><br><span class="line">            <span class="string">&quot;#FF69B4&quot;</span></span><br><span class="line">        ],</span><br><span class="line">    ],</span><br><span class="line">];</span><br></pre></td></tr></table></figure></li>
+<li><p>给指定微信好友推送消息</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">EasyWeChat</span>\<span class="title">Factory</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$config</span> = [</span><br><span class="line">    <span class="string">&#x27;app_id&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,<span class="comment">//你自己的appID</span></span><br><span class="line">    <span class="string">&#x27;secret&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,<span class="comment">//你自己的appsecret</span></span><br><span class="line">    <span class="comment">// 指定 API 调用返回结果的类型：array(default)/collection/object/raw/自定义类名</span></span><br><span class="line">    <span class="string">&#x27;response_type&#x27;</span> =&gt; <span class="string">&#x27;array&#x27;</span>,</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">];</span><br><span class="line"><span class="variable language_">$this</span>-&gt;app = <span class="title class_">Factory</span>::<span class="title function_ invoke__">officialAccount</span>(<span class="variable">$config</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = <span class="variable language_">$this</span>-&gt;app-&gt;template_message-&gt;<span class="title function_ invoke__">send</span>(<span class="variable">$msg</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>添加定时任务</p>
+</li>
+</ol>
+<p>Linux crontab</p>
+<p><code>* * * * * cd /你的项目路径 &amp;&amp; php artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</code></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p><a target="_blank" rel="noopener" href="https://github.com/haix8/wechatMessage">完整代码点这里</a></p>
+<p>微信在2023年5月对模版消息作出调整，把自定义颜色、表情符号、备注内容等移除了，具体可见<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/cgi-bin/announce?action=getannouncement&announce_id=11680142498cInTZ&version=&lang=zh_CN&token=">公告</a>，所以以上代码中的自定义颜色、remark都已不生效，但是也不影响正常使用。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/archives/">Blog</a></li>
+        
+          <li><a href="/gtags/">Tags</a></li>
+        
+          <li><a href="/TODO/">TODO</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%81%9A"><span class="toc-number">1.</span> <span class="toc-text">为什么做</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E5%81%9A"><span class="toc-number">2.</span> <span class="toc-text">怎么做</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.</span> <span class="toc-text">实现步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-number">5.</span> <span class="toc-text">最后</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&text=微信订阅号定时发送消息的工具"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&is_video=false&description=微信订阅号定时发送消息的工具"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=微信订阅号定时发送消息的工具&body=Check out this article: https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&title=微信订阅号定时发送消息的工具"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&name=微信订阅号定时发送消息的工具&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/%E5%BE%AE%E4%BF%A1%E8%AE%A2%E9%98%85%E5%8F%B7%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B7%A5%E5%85%B7/&t=微信订阅号定时发送消息的工具"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2023
+    Haix
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'haix8/haix8.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
