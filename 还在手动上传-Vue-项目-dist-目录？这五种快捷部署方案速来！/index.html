@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="使用Vue开发项目，每次编译后需要手动将dist目录上传到服务器，那有没有更便捷的方法呢？这个问题其实很常见，尤其是在需要频繁部署的时候。常见的解决方案可能包括使用自动化脚本、CI&#x2F;CD工具，或者利用Git的钩子或平台功能。  方案一：Shell 脚本 + rsync（最快实现） 创建 deploy.sh 脚本  123# deploy.shnpm run build &amp;&amp;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/index.html">
+<meta property="og:site_name" content="Haix">
+<meta property="og:description" content="使用Vue开发项目，每次编译后需要手动将dist目录上传到服务器，那有没有更便捷的方法呢？这个问题其实很常见，尤其是在需要频繁部署的时候。常见的解决方案可能包括使用自动化脚本、CI&#x2F;CD工具，或者利用Git的钩子或平台功能。  方案一：Shell 脚本 + rsync（最快实现） 创建 deploy.sh 脚本  123# deploy.shnpm run build &amp;&amp;a">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-10T03:51:18.000Z">
+<meta property="article:modified_time" content="2025-02-10T03:51:39.283Z">
+<meta property="article:author" content="Haix">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80%E7%9A%84IndexedDB/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9AShell-%E8%84%9A%E6%9C%AC-rsync%EF%BC%88%E6%9C%80%E5%BF%AB%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">方案一：Shell 脚本 + rsync（最快实现）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AGitHub-Actions-%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%88%E6%8E%A8%E8%8D%90%E5%9B%A2%E9%98%9F%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">方案二：GitHub Actions 自动化（推荐团队使用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9AWebpack-%E6%8F%92%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%EF%BC%88%E9%80%82%E5%90%88%E7%BA%AF%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">方案三：Webpack 插件自动上传（适合纯前端项目）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E5%9B%9B%EF%BC%9ADocker-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%88%E9%80%82%E5%90%88%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">方案四：Docker 容器化部署（适合微服务架构）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%94%EF%BC%9A%E4%BD%BF%E7%94%A8-Serverless-%E6%9C%8D%E5%8A%A1%EF%BC%88%E6%9C%80%E5%BF%AB%E4%B8%8A%E7%BA%BF%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">方案五：使用 Serverless 服务（最快上线）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%AE%EF%BC%88%E6%89%80%E6%9C%89%E6%96%B9%E6%A1%88%E9%80%9A%E7%94%A8%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">安全建议（所有方案通用）</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Haix</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-02-10T03:51:18.000Z" class="dt-published" itemprop="datePublished">2025-02-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <blockquote>
+<p> 使用Vue开发项目，每次编译后需要手动将dist目录上传到服务器，那有没有更便捷的方法呢？这个问题其实很常见，尤其是在需要频繁部署的时候。常见的解决方案可能包括使用自动化脚本、CI&#x2F;CD工具，或者利用Git的钩子或平台功能。</p>
+</blockquote>
+<h3 id="方案一：Shell-脚本-rsync（最快实现）"><a href="#方案一：Shell-脚本-rsync（最快实现）" class="headerlink" title="方案一：Shell 脚本 + rsync（最快实现）"></a>方案一：Shell 脚本 + rsync（最快实现）</h3><ol>
+<li>创建 <code>deploy.sh</code> 脚本</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># deploy.sh</span></span><br><span class="line">npm run build &amp;&amp; \</span><br><span class="line">rsync -avz --delete -e <span class="string">&quot;ssh -p 22&quot;</span> ./dist/ user@yourserver:/path/to/target</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>package.json</code> 中添加部署脚本</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;deploy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sh deploy.sh&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>运行 <code>npm run deploy</code> 即可完成构建部署</li>
+</ol>
+<p>	</p>
+<h3 id="方案二：GitHub-Actions-自动化（推荐团队使用）"><a href="#方案二：GitHub-Actions-自动化（推荐团队使用）" class="headerlink" title="方案二：GitHub Actions 自动化（推荐团队使用）"></a>方案二：GitHub Actions 自动化（推荐团队使用）</h3><ol>
+<li>在项目根目录创建 <code>.github/workflows/deploy.yml</code></li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">CI/CD</span> <span class="string">Pipeline</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">main</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">deploy:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">    </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Node.js</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-node@v3</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">node-version:</span> <span class="number">18</span></span><br><span class="line">        </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npm</span> <span class="string">ci</span></span><br><span class="line">      </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span> <span class="string">project</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line">      </span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">to</span> <span class="string">Server</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">appleboy/scp-action@v0.1.3</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">host:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.SERVER_HOST</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">username:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.SERVER_USER</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.SSH_PRIVATE_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">port:</span> <span class="number">22</span></span><br><span class="line">        <span class="attr">source:</span> <span class="string">&quot;dist/*&quot;</span></span><br><span class="line">        <span class="attr">target:</span> <span class="string">&quot;/var/www/your-project&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="方案三：Webpack-插件自动上传（适合纯前端项目）"><a href="#方案三：Webpack-插件自动上传（适合纯前端项目）" class="headerlink" title="方案三：Webpack 插件自动上传（适合纯前端项目）"></a>方案三：Webpack 插件自动上传（适合纯前端项目）</h3><ol>
+<li>安装依赖</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install ssh2-sftp-client --save-dev</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改 <code>vue.config.js</code> 文件</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vue.config.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Client</span> = <span class="built_in">require</span>(<span class="string">&#x27;ssh2-sftp-client&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">chainWebpack</span>: <span class="function">(<span class="params">config</span>) =&gt;</span> &#123;</span><br><span class="line">    config.<span class="title function_">plugin</span>(<span class="string">&#x27;deploy&#x27;</span>).<span class="title function_">tap</span>(<span class="function">() =&gt;</span> [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">apply</span>: <span class="function">(<span class="params">compiler</span>) =&gt;</span> &#123;</span><br><span class="line">          compiler.<span class="property">hooks</span>.<span class="property">afterEmit</span>.<span class="title function_">tapAsync</span>(<span class="string">&#x27;DeployPlugin&#x27;</span>, <span class="function">(<span class="params">compilation, callback</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> sftp = <span class="keyword">new</span> <span class="title class_">Client</span>();</span><br><span class="line">            </span><br><span class="line">            sftp.<span class="title function_">connect</span>(&#123;</span><br><span class="line">              <span class="attr">host</span>: <span class="string">&#x27;your-server.com&#x27;</span>,</span><br><span class="line">              <span class="attr">port</span>: <span class="number">22</span>,</span><br><span class="line">              <span class="attr">username</span>: <span class="string">&#x27;deploy-user&#x27;</span>,</span><br><span class="line">              <span class="attr">privateKey</span>: <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>).<span class="title function_">readFileSync</span>(<span class="built_in">require</span>(<span class="string">&#x27;os&#x27;</span>).<span class="title function_">homedir</span>() + <span class="string">&#x27;/.ssh/id_rsa&#x27;</span>)</span><br><span class="line">            &#125;)</span><br><span class="line">            .<span class="title function_">then</span>(<span class="function">() =&gt;</span> sftp.<span class="title function_">uploadDir</span>(<span class="string">&#x27;dist&#x27;</span>, <span class="string">&#x27;/var/www/html&#x27;</span>))</span><br><span class="line">            .<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">              sftp.<span class="title function_">end</span>();</span><br><span class="line">              <span class="title function_">callback</span>();</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方案四：Docker-容器化部署（适合微服务架构）"><a href="#方案四：Docker-容器化部署（适合微服务架构）" class="headerlink" title="方案四：Docker 容器化部署（适合微服务架构）"></a>方案四：Docker 容器化部署（适合微服务架构）</h3><ol>
+<li>创建 Dockerfile</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">18</span>-alpine as builder</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package*.json ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm ci</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> npm run build</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> nginx:alpine</span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> --from=builder /app/dist /usr/share/nginx/html</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建部署脚本</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">docker build -t vue-app .</span><br><span class="line">docker save vue-app | ssh user@server <span class="string">&quot;docker load&quot;</span></span><br><span class="line">ssh user@server <span class="string">&quot;docker run -d -p 80:80 --restart always vue-app&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="方案五：使用-Serverless-服务（最快上线）"><a href="#方案五：使用-Serverless-服务（最快上线）" class="headerlink" title="方案五：使用 Serverless 服务（最快上线）"></a>方案五：使用 Serverless 服务（最快上线）</h3><ol>
+<li>安装 Vercel CLI</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vercel</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建 <code>vercel.json</code></li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;builds&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;src&quot;</span><span class="punctuation">:</span> <span class="string">&quot;dist/**/*&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;use&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@vercel/static&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;routes&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span> <span class="attr">&quot;handle&quot;</span><span class="punctuation">:</span> <span class="string">&quot;filesystem&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">&#123;</span> <span class="attr">&quot;src&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/.*&quot;</span><span class="punctuation">,</span> <span class="attr">&quot;dest&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/index.html&quot;</span> <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>部署命令</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build &amp;&amp; vercel --prod</span><br></pre></td></tr></table></figure>
+
+<h3 id="安全建议（所有方案通用）"><a href="#安全建议（所有方案通用）" class="headerlink" title="安全建议（所有方案通用）"></a>安全建议（所有方案通用）</h3><ol>
+<li>使用 SSH 密钥认证代替密码</li>
+<li>敏感信息处理</li>
+</ol>
+<ul>
+<li>永远不要将凭证提交到代码仓库</li>
+<li>使用环境变量（GitHub Secrets &#x2F; .env 文件）</li>
+<li>服务器目录权限设置：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R www-data:www-data /var/www/html</span><br><span class="line"><span class="built_in">chmod</span> -R 755 /var/www/html</span><br></pre></td></tr></table></figure>
+
+<p>选择方案优先级建议：</p>
+<ol>
+<li>个人项目 → 方案一</li>
+<li>团队协作 → 方案二</li>
+<li>需要灰度发布 → 方案四</li>
+<li>快速原型 → 方案五</li>
+<li>需要构建时触发 → 方案三</li>
+</ol>
+<p>可以根据实际需求组合使用这些方案，例如用 GitHub Actions 触发 Docker 构建部署。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/archives/">Blog</a></li>
+        
+          <li><a href="/gtags/">Tags</a></li>
+        
+          <li><a href="/TODO/">TODO</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9AShell-%E8%84%9A%E6%9C%AC-rsync%EF%BC%88%E6%9C%80%E5%BF%AB%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">方案一：Shell 脚本 + rsync（最快实现）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9AGitHub-Actions-%E8%87%AA%E5%8A%A8%E5%8C%96%EF%BC%88%E6%8E%A8%E8%8D%90%E5%9B%A2%E9%98%9F%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">方案二：GitHub Actions 自动化（推荐团队使用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9AWebpack-%E6%8F%92%E4%BB%B6%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%EF%BC%88%E9%80%82%E5%90%88%E7%BA%AF%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">方案三：Webpack 插件自动上传（适合纯前端项目）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E5%9B%9B%EF%BC%9ADocker-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%88%E9%80%82%E5%90%88%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">方案四：Docker 容器化部署（适合微服务架构）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%94%EF%BC%9A%E4%BD%BF%E7%94%A8-Serverless-%E6%9C%8D%E5%8A%A1%EF%BC%88%E6%9C%80%E5%BF%AB%E4%B8%8A%E7%BA%BF%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">方案五：使用 Serverless 服务（最快上线）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%BB%BA%E8%AE%AE%EF%BC%88%E6%89%80%E6%9C%89%E6%96%B9%E6%A1%88%E9%80%9A%E7%94%A8%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">安全建议（所有方案通用）</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/%E8%BF%98%E5%9C%A8%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0-Vue-%E9%A1%B9%E7%9B%AE-dist-%E7%9B%AE%E5%BD%95%EF%BC%9F%E8%BF%99%E4%BA%94%E7%A7%8D%E5%BF%AB%E6%8D%B7%E9%83%A8%E7%BD%B2%E6%96%B9%E6%A1%88%E9%80%9F%E6%9D%A5%EF%BC%81/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2025
+    Haix
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/archives/">Blog</a></li><!--
+     --><!--
+       --><li><a href="/gtags/">Tags</a></li><!--
+     --><!--
+       --><li><a href="/TODO/">TODO</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="https://github.com/haix8">GitHub</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'haix8/haix8.github.io';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'Comment';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
