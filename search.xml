@@ -12,6 +12,12 @@
       
       
       
+        <tags>
+            
+            <tag> think </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -27,7 +33,7 @@
       
         <tags>
             
-            <tag> deepseek </tag>
+            <tag> think </tag>
             
         </tags>
       
@@ -44,6 +50,12 @@
       
       
       
+        <tags>
+            
+            <tag> Coding </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -56,6 +68,12 @@
         <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>最近做一个项目需要缓存一些数据，不多说直接上<code>localStorage.setItem</code>，没想到数据太大被限制了。</p><blockquote><p>“setStorage:fail QuotaExceededError: Failed to execute ‘setItem’ on ‘Storage’: Setting the value of ‘87b0ac0beb0984f4d792ae03f7264859’ exceeded the quota.”</p></blockquote><p>了解了一下<code>localStorage</code>容量一般在 5M-10M 左右，用来缓存一些简单的数据基本够用。其实浏览器也提供了大数据量的本地存储，像是 <code>IndexedDB</code> 存储数据大小一般在 <code>250M</code> 以上。容量大了但是使用方式也复杂了，因为我只是简单的使用存储一些缓存数据而已，并没有更深的需求，于是为了让 <code>IndexedDB</code> 的使用更加简单和直观，本文将通过将 <code>IndexedDB</code> 的操作 <code>Promise</code> 化，从而简化前端数据存储的操作。</p><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Promise化 IndexedDB 请求</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">IDBRequest</span>&#125; request IndexedDB请求对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Promise</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">promisifyRequest</span>(<span class="params">request</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        request.<span class="property">oncomplete</span> = request.<span class="property">onsuccess</span> = <span class="function">() =&gt;</span> <span class="title function_">resolve</span>(request.<span class="property">result</span>);</span><br><span class="line">        request.<span class="property">onabort</span> = request.<span class="property">onerror</span> = <span class="function">() =&gt;</span> <span class="title function_">reject</span>(request.<span class="property">error</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建数据库存储</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; dbName 数据库名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; storeName 存储库名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Function</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">createStore</span>(<span class="params">dbName, storeName</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> request = indexedDB.<span class="title function_">open</span>(dbName);</span><br><span class="line">    request.<span class="property">onupgradeneeded</span> = <span class="function">() =&gt;</span> request.<span class="property">result</span>.<span class="title function_">createObjectStore</span>(storeName);</span><br><span class="line">    <span class="keyword">const</span> dbPromise = <span class="title function_">promisifyRequest</span>(request);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">mode, callback</span>) =&gt;</span> dbPromise.<span class="title function_">then</span>(<span class="function"><span class="params">db</span> =&gt;</span></span><br><span class="line">        <span class="title function_">callback</span>(db.<span class="title function_">transaction</span>(storeName, mode).<span class="title function_">objectStore</span>(storeName))</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取默认存储实例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">let</span> defaultStore;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getDefaultStore</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> defaultStore || (defaultStore = <span class="title function_">createStore</span>(<span class="string">&#x27;uniapp-store&#x27;</span>, <span class="string">&#x27;default&#x27;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; key 键</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">Function</span>&#125; customStore 自定义存储实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Promise</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">get</span>(<span class="params">key, customStore = getDefaultStore()</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">customStore</span>(<span class="string">&#x27;readonly&#x27;</span>, <span class="function"><span class="params">store</span> =&gt;</span> <span class="title function_">promisifyRequest</span>(store.<span class="title function_">get</span>(key)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 设置数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; key 键</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">any</span>&#125; value 值</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">Function</span>&#125; customStore 自定义存储实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Promise</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">set</span>(<span class="params">key, value, customStore = getDefaultStore()</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">customStore</span>(<span class="string">&#x27;readwrite&#x27;</span>, <span class="function"><span class="params">store</span> =&gt;</span> &#123;</span><br><span class="line">        store.<span class="title function_">put</span>(value, key);</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">promisifyRequest</span>(store.<span class="property">transaction</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 删除数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; key 键</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">Function</span>&#125; customStore 自定义存储实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Promise</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">del</span>(<span class="params">key, customStore = getDefaultStore()</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">customStore</span>(<span class="string">&#x27;readwrite&#x27;</span>, <span class="function"><span class="params">store</span> =&gt;</span> &#123;</span><br><span class="line">        store.<span class="title function_">delete</span>(key);</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">promisifyRequest</span>(store.<span class="property">transaction</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 清空存储</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">Function</span>&#125; customStore 自定义存储实例</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> &#123;<span class="type">Promise</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">clear</span>(<span class="params">customStore = getDefaultStore()</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">customStore</span>(<span class="string">&#x27;readwrite&#x27;</span>, <span class="function"><span class="params">store</span> =&gt;</span> &#123;</span><br><span class="line">        store.<span class="title function_">clear</span>();</span><br><span class="line">        <span class="keyword">return</span> <span class="title function_">promisifyRequest</span>(store.<span class="property">transaction</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; get, set, del, clear &#125; <span class="keyword">from</span> <span class="string">&#x27;@/utils/cache&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取数据</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">get</span>(cacheKey);</span><br><span class="line"><span class="comment">//写入数据</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">set</span>(cacheKey, item);</span><br><span class="line"><span class="comment">//删除数据</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">del</span>(cacheKey);</span><br><span class="line"><span class="comment">//清空存储</span></span><br><span class="line"><span class="keyword">await</span> <span class="title function_">clear</span>();</span><br></pre></td></tr></table></figure>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> Coding </tag>
+            
+        </tags>
       
     </entry>
     
@@ -72,7 +90,7 @@
       
         <tags>
             
-            <tag> uniapp </tag>
+            <tag> Coding </tag>
             
         </tags>
       
@@ -89,6 +107,12 @@
       
       
       
+        <tags>
+            
+            <tag> think </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -103,6 +127,8 @@
       
       
         <tags>
+            
+            <tag> Coding </tag>
             
             <tag> cocos </tag>
             
@@ -123,7 +149,7 @@
       
         <tags>
             
-            <tag> php </tag>
+            <tag> Coding </tag>
             
         </tags>
       
@@ -141,6 +167,8 @@
       
       
         <tags>
+            
+            <tag> Coding </tag>
             
             <tag> cocos </tag>
             
@@ -161,7 +189,7 @@
       
         <tags>
             
-            <tag> php </tag>
+            <tag> Coding </tag>
             
         </tags>
       
@@ -180,7 +208,7 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
+            <tag> 生活 </tag>
             
         </tags>
       
@@ -199,11 +227,7 @@
       
         <tags>
             
-            <tag> php </tag>
-            
-            <tag> laravel </tag>
-            
-            <tag> wechat </tag>
+            <tag> coding </tag>
             
         </tags>
       
@@ -222,7 +246,7 @@
       
         <tags>
             
-            <tag> 微信小程序 </tag>
+            <tag> Coding </tag>
             
         </tags>
       
@@ -241,9 +265,7 @@
       
         <tags>
             
-            <tag> UniApp </tag>
-            
-            <tag> ApplePay </tag>
+            <tag> Coding </tag>
             
         </tags>
       
