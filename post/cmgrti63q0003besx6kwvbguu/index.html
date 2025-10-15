@@ -9,7 +9,7 @@
     <meta name="description" content="由于 Cocos Creator 3.x 移除了 v2.x cc.audioEngine 系列的 API，统一使用 AudioSource 控制音频播放。  根据cocos官网给的例子按自己实际使用修改的一个小工具🔧 先看官网给的例子，官方现在推荐使用的是audioSource, 播放音乐用 play, 播放音效用 playOneShot。但是一个audioSource只能同时操作单个音频，所">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cocos Creator音频播放管理器">
-<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/index.html">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/index.html">
 <meta property="og:site_name" content="Haix">
 <meta property="og:description" content="由于 Cocos Creator 3.x 移除了 v2.x cc.audioEngine 系列的 API，统一使用 AudioSource 控制音频播放。  根据cocos官网给的例子按自己实际使用修改的一个小工具🔧 先看官网给的例子，官方现在推荐使用的是audioSource, 播放音乐用 play, 播放音效用 playOneShot。但是一个audioSource只能同时操作单个音频，所">
 <meta property="og:locale" content="zh_CN">
@@ -85,10 +85,10 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="上一篇" href="/post/cmgrtbcs0000gmisxccxb9l3z/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="上一篇" href="/post/cmgrti63z000hbesxa4pz5pfg/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
-        <li><a class="icon" aria-label="下一篇" href="/post/cmgrtbcry0006misxfvbvcz95/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="下一篇" href="/post/cmgrti63v0009besxgmok95e6/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -101,17 +101,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&text=Cocos Creator音频播放管理器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&is_video=false&description=Cocos Creator音频播放管理器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Cocos Creator音频播放管理器&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&name=Cocos Creator音频播放管理器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&t=Cocos Creator音频播放管理器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&text=Cocos Creator音频播放管理器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&is_video=false&description=Cocos Creator音频播放管理器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cocos Creator音频播放管理器&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&name=Cocos Creator音频播放管理器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&t=Cocos Creator音频播放管理器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -229,17 +229,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&text=Cocos Creator音频播放管理器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&is_video=false&description=Cocos Creator音频播放管理器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Cocos Creator音频播放管理器&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&title=Cocos Creator音频播放管理器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&name=Cocos Creator音频播放管理器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtbcrw0003misxagukeq49/&t=Cocos Creator音频播放管理器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&text=Cocos Creator音频播放管理器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&is_video=false&description=Cocos Creator音频播放管理器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Cocos Creator音频播放管理器&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&title=Cocos Creator音频播放管理器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&name=Cocos Creator音频播放管理器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrti63q0003besx6kwvbguu/&t=Cocos Creator音频播放管理器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
