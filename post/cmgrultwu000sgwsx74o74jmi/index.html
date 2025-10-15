@@ -9,7 +9,7 @@
     <meta name="description" content="使用Vue开发项目，每次编译后需要手动将dist目录上传到服务器，那有没有更便捷的方法呢？这个问题其实很常见，尤其是在需要频繁部署的时候。常见的解决方案可能包括使用自动化脚本、CI&#x2F;CD工具，或者利用Git的钩子或平台功能。  方案一：Shell 脚本 + rsync（最快实现） 创建 deploy.sh 脚本  123# deploy.shnpm run build &amp;&amp;a">
 <meta property="og:type" content="article">
 <meta property="og:title" content="还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！">
-<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/index.html">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/index.html">
 <meta property="og:site_name" content="Haix">
 <meta property="og:description" content="使用Vue开发项目，每次编译后需要手动将dist目录上传到服务器，那有没有更便捷的方法呢？这个问题其实很常见，尤其是在需要频繁部署的时候。常见的解决方案可能包括使用自动化脚本、CI&#x2F;CD工具，或者利用Git的钩子或平台功能。  方案一：Shell 脚本 + rsync（最快实现） 创建 deploy.sh 脚本  123# deploy.shnpm run build &amp;&amp;a">
 <meta property="og:locale" content="zh_CN">
@@ -84,10 +84,10 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="上一篇" href="/post/cmgrtn53i000340sx813c107w/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="上一篇" href="/post/cmgrultwp0006gwsxbncuabrn/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
-        <li><a class="icon" aria-label="下一篇" href="/post/cmgrtn53n000l40sxc6fwaj4f/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="下一篇" href="/post/cmgrultws000jgwsx7lm5hkce/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -100,17 +100,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -282,17 +282,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53p000s40sxe8cra8i0/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&text=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&is_video=false&description=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&title=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&name=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrultwu000sgwsx74o74jmi/&t=还在手动上传 Vue 项目 dist 目录？这五种快捷部署方案速来！"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
