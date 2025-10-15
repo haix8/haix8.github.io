@@ -9,7 +9,7 @@
     <meta name="description" content="背景在分布式系统中，分布式锁是确保资源互斥访问的重要机制。我们在系统中修改已有数据时，需要先读取，然后进行修改保存，此时很容易遇到并发问题。由于修改和保存不是原子操作，在并发场景下，部分对数据的操作可能会丢失。在单服务器系统我们常用本地锁来避免并发带来的问题，然而，当服务采用集群方式部署时，本地锁无法在多个服务器之间生效，这时候保证数据的一致性就需要分布式锁来实现。 实现方式通过 Redis 的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP使用Redis实现分布式锁">
-<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/index.html">
+<meta property="og:url" content="https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/index.html">
 <meta property="og:site_name" content="Haix">
 <meta property="og:description" content="背景在分布式系统中，分布式锁是确保资源互斥访问的重要机制。我们在系统中修改已有数据时，需要先读取，然后进行修改保存，此时很容易遇到并发问题。由于修改和保存不是原子操作，在并发场景下，部分对数据的操作可能会丢失。在单服务器系统我们常用本地锁来避免并发带来的问题，然而，当服务采用集群方式部署时，本地锁无法在多个服务器之间生效，这时候保证数据的一致性就需要分布式锁来实现。 实现方式通过 Redis 的">
 <meta property="og:locale" content="zh_CN">
@@ -84,10 +84,10 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="上一篇" href="/post/cmgrti63q0003besx6kwvbguu/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="上一篇" href="/post/cmgrtn53l000940sx04lobezi/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
-        <li><a class="icon" aria-label="下一篇" href="/post/cmgrti63g0001besx2t7pecnb/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="下一篇" href="/post/cmgrtn53g000140sx153696gz/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -100,17 +100,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&text=PHP使用Redis实现分布式锁"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&is_video=false&description=PHP使用Redis实现分布式锁"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=PHP使用Redis实现分布式锁&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&name=PHP使用Redis实现分布式锁&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&t=PHP使用Redis实现分布式锁"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&text=PHP使用Redis实现分布式锁"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&is_video=false&description=PHP使用Redis实现分布式锁"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP使用Redis实现分布式锁&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&name=PHP使用Redis实现分布式锁&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&t=PHP使用Redis实现分布式锁"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -239,17 +239,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&text=PHP使用Redis实现分布式锁"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&is_video=false&description=PHP使用Redis实现分布式锁"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=PHP使用Redis实现分布式锁&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&title=PHP使用Redis实现分布式锁"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&name=PHP使用Redis实现分布式锁&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrti63v0009besxgmok95e6/&t=PHP使用Redis实现分布式锁"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&text=PHP使用Redis实现分布式锁"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&is_video=false&description=PHP使用Redis实现分布式锁"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PHP使用Redis实现分布式锁&body=Check out this article: https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&title=PHP使用Redis实现分布式锁"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&name=PHP使用Redis实现分布式锁&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://haix8.github.io/haix8.github.io/post/cmgrtn53k000640sx7yyh1pr4/&t=PHP使用Redis实现分布式锁"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
