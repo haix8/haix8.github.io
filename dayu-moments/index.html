@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#0b2ea8"/>
+<title>大鱼来客｜线下课朋友圈金句库</title>
+<style>
+:root{--blue:#0b2ea8;--blue2:#164bd8;--ink:#182033;--muted:#74809a;--bg:#f4f7ff;--gold:#d39a26;--card:#fff;--line:#e6ebf5}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink)}
+.hero{background:linear-gradient(145deg,#08208b 0%,#0e37be 58%,#295fe6 100%);color:white;padding:28px 18px 24px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.08);right:-80px;top:-100px}
+.brand{font-weight:800;letter-spacing:2px;font-size:14px;opacity:.95} h1{font-size:28px;line-height:1.2;margin:18px 0 10px} .sub{font-size:14px;line-height:1.8;opacity:.9;max-width:620px}
+.gift{margin-top:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:12px 14px;font-size:14px;line-height:1.7}
+.wrap{max-width:760px;margin:0 auto;padding:16px 14px 90px} .toolbar{display:flex;gap:10px;margin:2px 0 14px} button{font:inherit;border:0;cursor:pointer}
+.primary{flex:1;background:var(--blue);color:white;border-radius:12px;padding:13px 15px;font-weight:700;box-shadow:0 8px 22px rgba(11,46,168,.18)} .ghost{background:white;color:var(--blue);border:1px solid #dce4fb;border-radius:12px;padding:13px 15px;font-weight:700}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none;position:sticky;top:0;background:rgba(244,247,255,.96);backdrop-filter:blur(10px);z-index:5} .chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;background:white;border:1px solid #dce4fb;color:#4b5b79;padding:9px 12px;border-radius:999px;font-size:13px} .chip.active{background:var(--blue);color:white;border-color:var(--blue)}
+.top10{background:#fff8e7;border:1px solid #f1ddb1;color:#775111;border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.7}
+.list{display:grid;gap:12px} .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 16px rgba(20,42,100,.04)} .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px} .num{font-size:12px;color:#8792a8} .tag{font-size:12px;color:var(--blue);background:#edf2ff;padding:5px 8px;border-radius:999px}
+.copytext{white-space:pre-wrap;font-size:16px;line-height:1.85;font-weight:560;letter-spacing:.1px} .actions{display:flex;gap:8px;margin-top:14px} .copy{flex:1;background:#0b2ea8;color:white;border-radius:10px;padding:11px 12px;font-weight:750} .copy.secondary{background:#f0f4ff;color:#0b2ea8}
+.empty{text-align:center;color:var(--muted);padding:40px 12px} .fixed{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:8} .fixedin{max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px} .fixed .txt{font-size:12px;line-height:1.55;color:#4b5874} .fixed strong{display:block;color:#17203a;font-size:13px} .fixed button{background:#e7a827;color:#fff;border-radius:10px;padding:10px 13px;font-weight:800;white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%) translateY(20px);background:#17203a;color:#fff;padding:11px 14px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:20;max-width:85%;text-align:center} .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(7,16,45,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:30} .modal.show{display:flex} .panel{background:white;width:min(520px,100%);border-radius:18px;padding:20px} .panel h2{margin:0 0 10px;font-size:20px} .panel p{color:#5e6b83;line-height:1.75;font-size:14px} .panel .close{width:100%;background:var(--blue);color:white;border-radius:10px;padding:12px;font-weight:700;margin-top:6px}
+.smallnote{color:#7c879e;font-size:12px;line-height:1.6;margin:4px 2px 14px}
+@media(min-width:700px){.list{grid-template-columns:1fr 1fr} h1{font-size:34px}}
+</style>
+</head>
+<body>
+<section class="hero"><div class="brand">大鱼来客 · DAYULAIKE</div><h1>今天哪句话，真正戳中了你？</h1><div class="sub">100条线下课朋友圈金句。选一句今天最有感觉的，点一下复制，配上课堂现场照，把这一刻的认知留下来。</div><div class="gift">📚 <b>朋友圈送书：</b>挑一句你真心认同的文案，配2—3张现场照片发朋友圈，发完可找助教领取赠书。</div></section>
+<main class="wrap">
+<div class="toolbar"><button class="primary" id="randomBtn">🎲 随机给我一条</button><button class="ghost" id="topBtn">🔥 今日精选10条</button></div>
+<div class="chips" id="chips"></div>
+<div class="top10">不是帮大鱼“打广告”。挑一句你真正认同的话，让朋友圈记录你今天的思考和变化。</div>
+<div class="list" id="list"></div><div class="empty" id="empty" style="display:none">这个分类暂时没有文案</div>
+</main>
+<div class="fixed"><div class="fixedin"><div class="txt"><strong>发朋友圈后找助教领书</strong>建议配：课堂照 / 笔记照 / 老师授课照 / 合影</div><button id="guideBtn">查看发圈步骤</button></div></div>
+<div class="toast" id="toast">已复制</div>
+<div class="modal" id="modal"><div class="panel"><h2>3步发朋友圈</h2><p>① 选一句今天最有感觉的文案，点【一键复制】。<br>② 打开朋友圈，配2—3张现场照片。<br>③ 发完后凭朋友圈找助教领取赠书。</p><button class="close" id="closeBtn">知道了</button></div></div>
+<script>
+const DATA=[];
+</script>
+<script src="data1.js"></script>
+<script src="data2.js"></script>
+<script src="data3.js"></script>
+<script src="data4.js"></script>
+<script src="data5.js"></script>
+<script>
+const cats=['全部','陈总·增长投放','VV姐·成交私域','任社长·内容信任','老板经营','商业模式·区域第一','现场学习感悟'];
+let current='全部';
+const chips=document.getElementById('chips'), list=document.getElementById('list'), empty=document.getElementById('empty');
+const toast=document.getElementById('toast');
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function renderChips(){chips.innerHTML=cats.map(c=>`<button class="chip ${c===current?'active':''}" data-c="${esc(c)}">${esc(c)}</button>`).join(''); chips.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{current=b.dataset.c;renderChips();render()})}
+function render(arr){let data=arr||DATA.filter(x=>current==='全部'||x.cat===current); empty.style.display=data.length?'none':'block'; list.innerHTML=data.map(x=>`<article class="card"><div class="meta"><span class="num">NO.${String(x.id).padStart(3,'0')}</span><span class="tag">${esc(x.cat)}</span></div><div class="copytext">${esc(x.text)}</div><div class="actions"><button class="copy" data-id="${x.id}">一键复制</button><button class="copy secondary" data-share="${x.id}">复制+发圈提示</button></div></article>`).join(''); bind()}
+function bind(){document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>copyItem(+b.dataset.id,false));document.querySelectorAll('[data-share]').forEach(b=>b.onclick=()=>copyItem(+b.dataset.share,true))}
+function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1900)}
+async function copyItem(id,tip){const x=DATA.find(d=>d.id===id); try{await navigator.clipboard.writeText(x.text)}catch(e){const ta=document.createElement('textarea');ta.value=x.text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()} showToast(tip?'已复制｜建议配2—3张现场图':'文案已复制'); if(tip) setTimeout(()=>document.getElementById('modal').classList.add('show'),350)}
+document.getElementById('randomBtn').onclick=()=>{const pool=DATA.filter(x=>current==='全部'||x.cat===current); const x=pool[Math.floor(Math.random()*pool.length)]; render([x]); window.scrollTo({top:170,behavior:'smooth'})};
+document.getElementById('topBtn').onclick=()=>{const ids=[1,3,4,7,20,30,35,50,80,100]; render(DATA.filter(x=>ids.includes(x.id))); current='全部'; renderChips(); window.scrollTo({top:170,behavior:'smooth'})};
+document.getElementById('guideBtn').onclick=()=>document.getElementById('modal').classList.add('show');document.getElementById('closeBtn').onclick=()=>document.getElementById('modal').classList.remove('show');document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')e.currentTarget.classList.remove('show')};
+renderChips();render();
+</script>
+</body></html>
